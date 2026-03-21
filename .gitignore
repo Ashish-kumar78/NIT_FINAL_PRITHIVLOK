@@ -1,5 +1,19 @@
-node_modules
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Environment files (secrets)
 .env
-dist
-build
+**/.env
+
+# Build outputs
+dist/
+build/
+**/dist/
+**/build/
+
+# Misc
 .DS_Store
+*.log
+push_error.txt
+ascii_error.txt
