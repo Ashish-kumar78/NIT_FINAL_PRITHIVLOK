@@ -1,0 +1,6 @@
+material,weight,energy,cost
+plastic,1,5.8,20
+plastic,0.5,2.9,10
+metal,1,14,100
+paper,1,4,10
+glass,1,3,5
