@@ -75,28 +75,29 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/impact', impactRoutes);
 
 // ---- Serve Frontend (MUST be after all API routes) ----
-if (process.env.NODE_ENV === 'production') {
-  const distPath = path.join(__dirname, 'dist');
+const distPath = path.join(__dirname, 'dist');
+const indexPath = path.join(distPath, 'index.html');
+const hasFrontendBuild = fs.existsSync(distPath) && fs.existsSync(indexPath);
 
-  if (fs.existsSync(distPath) && fs.existsSync(path.join(distPath, 'index.html'))) {
-    console.log(`✅ Serving frontend from: ${distPath}`);
-    app.use(express.static(distPath));
+if (hasFrontendBuild) {
+  console.log(`✅ Serving frontend from: ${distPath}`);
+  app.use(express.static(distPath));
 
-    // SPA catch-all — send index.html for all non-API routes
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
-    });
-  } else {
-    console.warn('⚠️  Frontend dist not found at:', distPath);
-    console.warn('Make sure the build command copies dist to the backend folder.');
-  }
+  // SPA catch-all — send index.html for all non-API/non-upload routes
+  app.get(/^\/(?!api|uploads).*/, (req, res) => {
+    res.sendFile(indexPath);
+  });
 } else {
+  console.warn('⚠️  Frontend dist not found at:', distPath);
+  console.warn('Make sure the build command copies dist to the backend folder.');
+
+  // Fallback root response when frontend isn't built/copied yet
   app.get('/', (req, res) => {
     res.json({
       name: 'PrithviLok API',
       version: '1.0.0',
       description: 'Decentralized Sustainability Platform',
-      message: 'Backend running in development mode',
+      message: 'Backend running (frontend build not found)',
       status: '🟢 Running'
     });
   });

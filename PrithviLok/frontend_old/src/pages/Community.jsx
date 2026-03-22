@@ -9,6 +9,11 @@ import { Send, Heart, MessageCircle, Plus, Wallet, Trash2, ChevronDown, ChevronU
 import toast from 'react-hot-toast';
 import EcoLevelBadge from '../components/EcoLevelBadge';
 
+const MEDIA_BASE_URL =
+  import.meta.env.VITE_SOCKET_URL ||
+  (typeof window !== 'undefined' ? window.location.origin : '') ||
+  'http://localhost:5000';
+
 const Community = () => {
   const { user, web3Login } = useAuth();
   const { emit, on } = useSocket();
@@ -598,7 +603,7 @@ const PostCard = ({ post, user, onLike, onComment, onDelete, timeAgo, catColors 
                 <div className="skeleton-loader" style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, rgba(255,255,255,0.02) 25%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.02) 75%)', backgroundSize: '200% 100%', animation: 'skeleton 1.5s infinite' }} />
               )}
               <img
-                src={`${import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000'}${post.image}`}
+                src={`${MEDIA_BASE_URL}${post.image}`}
                 alt="Community uploaded content"
                 loading="lazy"
                 onLoad={() => setImageLoaded(true)}
@@ -618,7 +623,7 @@ const PostCard = ({ post, user, onLike, onComment, onDelete, timeAgo, catColors 
                 onClick={() => setIsFullScreen(false)}
               >
                 <img
-                  src={`${import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000'}${post.image}`}
+                  src={`${MEDIA_BASE_URL}${post.image}`}
                   alt="Full screen preview"
                   style={{ maxWidth: '95vw', maxHeight: '95vh', objectFit: 'contain', borderRadius: '8px', boxShadow: '0 20px 50px rgba(0,0,0,0.5)' }}
                 />

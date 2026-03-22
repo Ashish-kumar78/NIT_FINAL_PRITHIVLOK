@@ -200,7 +200,7 @@ const DustbinLocator = () => {
                       {d.photo && (
                         <div style={{ marginBottom: 8, borderRadius: 8, overflow: 'hidden' }}>
                           <img 
-                            src={`${(import.meta.env.VITE_API_URL || 'http://localhost:5000/api').replace('/api', '')}${d.photo}`} 
+                            src={`${(import.meta.env.VITE_API_URL || '/api').replace('/api', '') || (typeof window !== 'undefined' ? window.location.origin : '')}${d.photo}`} 
                             alt={`${d.type} bin`} 
                             style={{ width: '100%', height: '120px', objectFit: 'cover', display: 'block' }} 
                             onError={(e) => e.target.style.display = 'none'}

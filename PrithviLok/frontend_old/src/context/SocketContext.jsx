@@ -13,7 +13,8 @@ export const SocketProvider = ({ children }) => {
   const [connected, setConnected] = useState(false);
 
   useEffect(() => {
-    const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000';
+    const runtimeOrigin = typeof window !== 'undefined' ? window.location.origin : '';
+    const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || runtimeOrigin || 'http://localhost:5000';
 
     socketRef.current = io(SOCKET_URL, {
       autoConnect: true,
