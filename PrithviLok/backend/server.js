@@ -49,6 +49,7 @@ app.use(globalLimiter);
 
 import path from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs';
 
 // Get __dirname in ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -59,16 +60,24 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Serve static frontend files in production
 if (process.env.NODE_ENV === 'production') {
-  const distPath = path.join(__dirname, '../frontend_old/dist');
-  app.use(express.static(distPath));
+  // The dist folder should be copied to backend during build
+  const distPath = path.join(__dirname, 'dist');
   
-  // Serve index.html for all non-API routes (React Router support)
-  app.get('*', (req, res, next) => {
-    if (req.path.startsWith('/api')) {
-      return next();
-    }
-    res.sendFile(path.join(distPath, 'index.html'));
-  });
+  if (fs.existsSync(distPath) && fs.existsSync(path.join(distPath, 'index.html'))) {
+    console.log(`✅ Serving frontend from: ${distPath}`);
+    app.use(express.static(distPath));
+    
+    // Serve index.html for all non-API routes (React Router support)
+    app.get('*', (req, res, next) => {
+      if (req.path.startsWith('/api')) {
+        return next();
+      }
+      res.sendFile(path.join(distPath, 'index.html'));
+    });
+  } else {
+    console.warn('⚠️  Frontend dist not found at:', distPath);
+    console.warn('Make sure build command copies dist to backend folder');
+  }
 } else {
   // Development - show API info
   app.get('/', (req, res) => {

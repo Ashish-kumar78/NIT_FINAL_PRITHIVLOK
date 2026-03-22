@@ -4,7 +4,14 @@ services:
     name: nit-final-prithivlok
     runtime: node
     rootDir: PrithviLok/backend
-    buildCommand: npm install && cd ../frontend_old && npm install && npm run build
+    buildCommand: |
+      npm install
+      cd ../frontend_old
+      npm install
+      npm run build
+      # Copy dist to backend for easier serving
+      rm -rf ../backend/dist
+      cp -r dist ../backend/dist
     startCommand: node server.js
     envVars:
       - key: NODE_ENV
