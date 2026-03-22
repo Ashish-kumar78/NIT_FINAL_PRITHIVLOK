@@ -50,6 +50,29 @@ app.use(globalLimiter);
 // Serve uploaded files
 app.use('/uploads', express.static('uploads'));
 
+// ---- Root Route ----
+app.get('/', (req, res) => {
+  res.json({
+    name: 'PrithviLok API',
+    version: '1.0.0',
+    description: 'Decentralized Sustainability Platform',
+    endpoints: {
+      health: '/api/health',
+      auth: '/api/auth',
+      users: '/api/users',
+      dustbins: '/api/dustbins',
+      environment: '/api/environment',
+      community: '/api/community',
+      learning: '/api/learning',
+      leaderboard: '/api/leaderboard',
+      admin: '/api/admin',
+      impact: '/api/impact'
+    },
+    documentation: 'https://github.com/Ashish-kumar78/NIT_FINAL_PRITHIVLOK',
+    status: '🟢 Running'
+  });
+});
+
 // ---- API Routes ----
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: '🌍 PrithviLok API is running!' });
