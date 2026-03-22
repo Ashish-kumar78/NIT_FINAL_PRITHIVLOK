@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { BarChart, Bar, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Wind, Droplets, Thermometer, Activity, Users, Leaf, Trash2, MapPin, Zap } from 'lucide-react';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
+import { useTranslation } from 'react-i18next';
 
 const AQI_COLORS = {
   Good: '#10B981', Moderate: '#F59E0B',
@@ -12,6 +13,7 @@ const AQI_COLORS = {
 
 const Dashboard = () => {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const [weather, setWeather] = useState(null);
   const [aqi, setAqi] = useState(null);
   const [wqi, setWqi] = useState(null);
@@ -67,7 +69,7 @@ const Dashboard = () => {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', gap: 16 }}>
         <div className="spinner" style={{ width: 48, height: 48, borderWidth: 4 }} />
-        <p className="text-gradient" style={{ fontSize: '18px', fontWeight: 700, letterSpacing: '0.05em' }}>Loading intelligence...</p>
+        <p className="text-gradient" style={{ fontSize: '18px', fontWeight: 700, letterSpacing: '0.05em' }}>{t('loading')}</p>
       </div>
     );
   }
@@ -85,24 +87,24 @@ const Dashboard = () => {
         
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 24, position: 'relative', zIndex: 1 }}>
           <div>
-            <span style={{ fontSize: '12px', color: '#10B981', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.15em', display: 'block', marginBottom: 8 }}>Dashboard Overview</span>
+            <span style={{ fontSize: '12px', color: '#10B981', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.15em', display: 'block', marginBottom: 8 }}>{t('dashboard_overview')}</span>
             <h1 style={{ fontSize: '36px', fontWeight: 800, color: '#fff', marginBottom: 8, lineHeight: 1.1 }}>
-              Welcome back, <span className="text-gradient">{user?.name || 'Warrior'}</span> 🌍
+              {t('welcome')}, <span className="text-gradient">{user?.name || 'Warrior'}</span> 🌍
             </h1>
             <p style={{ fontSize: '15px', color: '#94A3B8', display: 'flex', alignItems: 'center', gap: 8 }}>
-              <MapPin size={16} color="#10B981" /> Environmental intelligence for <strong style={{ color: '#fff' }}>{weather?.location || 'your area'}</strong>
+              <MapPin size={16} color="#10B981" /> {t('environmental_intelligence')} <strong style={{ color: '#fff' }}>{weather?.location || t('your_area')}</strong>
             </p>
           </div>
 
           {user && (
             <div style={{ display: 'flex', gap: '32px', background: 'rgba(2, 6, 23, 0.5)', padding: '20px 32px', borderRadius: '24px', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.05)' }}>
               <div style={{ textAlign: 'center' }}>
-                <p style={{ fontSize: '12px', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Eco Score</p>
+                <p style={{ fontSize: '12px', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('eco_score')}</p>
                 <p className="text-gradient-gold" style={{ fontSize: '32px', fontWeight: 900, marginTop: 4 }}>{user.ecoScore || 0}</p>
               </div>
               <div style={{ width: '1px', background: 'rgba(255,255,255,0.1)' }} />
               <div style={{ textAlign: 'center' }}>
-                <p style={{ fontSize: '12px', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>Impact Level</p>
+                <p style={{ fontSize: '12px', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>{t('impact_level')}</p>
                 <span className="badge" style={{ background: 'rgba(16,185,129,0.15)', color: '#34D399', borderColor: 'rgba(16,185,129,0.3)', boxShadow: '0 0 15px rgba(16, 185, 129, 0.2)' }}>
                   {user.ecoLevel || 'Seed'}
                 </span>
@@ -120,14 +122,14 @@ const Dashboard = () => {
           <div style={{ position: 'absolute', top: -50, right: -50, width: 150, height: 150, background: 'rgba(59,130,246,0.15)', filter: 'blur(40px)', borderRadius: '50%' }} />
           <div className="dashboard-card-header">
             <div style={{ width: 44, height: 44, borderRadius: 12, background: 'rgba(59,130,246,0.15)', border: '1px solid rgba(59,130,246,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Thermometer size={20} color="#60A5FA" /></div>
-            <span className="patch-badge" style={{ color: '#60A5FA', borderColor: 'rgba(59,130,246,0.3)' }}>Weather</span>
+            <span className="patch-badge" style={{ color: '#60A5FA', borderColor: 'rgba(59,130,246,0.3)' }}>{t('weather')}</span>
           </div>
           <div style={{ position: 'relative' }}>
             <div className="dashboard-card-value" style={{ color: '#fff' }}>{weather?.temp ?? '--'}<span style={{ fontSize: '20px', color: '#60A5FA' }}>°C</span></div>
             <p className="dashboard-card-label" style={{ marginTop: 8, textTransform: 'capitalize' }}>{weather?.description || 'N/A'}</p>
             <div style={{ width: '100%', height: 1, background: 'rgba(255,255,255,0.05)', margin: '16px 0' }} />
             <div className="stat-row">
-              <span>Humidity</span>
+              <span>{t('humidity')}</span>
               <span style={{ fontWeight: 700, color: '#fff' }}>{weather?.humidity}%</span>
             </div>
           </div>
@@ -138,14 +140,14 @@ const Dashboard = () => {
           <div style={{ position: 'absolute', top: -50, right: -50, width: 150, height: 150, background: 'rgba(245,158,11,0.1)', filter: 'blur(40px)', borderRadius: '50%' }} />
           <div className="dashboard-card-header">
             <div style={{ width: 44, height: 44, borderRadius: 12, background: 'rgba(245,158,11,0.15)', border: '1px solid rgba(245,158,11,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Wind size={20} color="#FBBF24" /></div>
-            <span className="patch-badge" style={{ color: '#FBBF24', borderColor: 'rgba(245,158,11,0.3)' }}>Air Quality</span>
+            <span className="patch-badge" style={{ color: '#FBBF24', borderColor: 'rgba(245,158,11,0.3)' }}>{t('air_quality')}</span>
           </div>
           <div style={{ position: 'relative' }}>
             <div className="dashboard-card-value" style={{ color: AQI_COLORS[aqi?.status] || '#fff', textShadow: `0 0 20px ${AQI_COLORS[aqi?.status] || '#fff'}60` }}>{aqi?.aqi ?? '--'}</div>
             <p className="dashboard-card-label" style={{ color: AQI_COLORS[aqi?.status] || '#fff', marginTop: 8 }}>{aqi?.status || 'N/A'}</p>
             <div style={{ width: '100%', height: 1, background: 'rgba(255,255,255,0.05)', margin: '16px 0' }} />
             <div className="stat-row">
-              <span>Dominant Pollutant</span>
+              <span>{t('dominant_pollutant')}</span>
               <span style={{ fontWeight: 700, color: '#fff' }}>{aqi?.dominantPollutant || '--'}</span>
             </div>
           </div>
@@ -156,14 +158,14 @@ const Dashboard = () => {
           <div style={{ position: 'absolute', top: -50, right: -50, width: 150, height: 150, background: 'rgba(34,211,238,0.15)', filter: 'blur(40px)', borderRadius: '50%' }} />
           <div className="dashboard-card-header">
             <div style={{ width: 44, height: 44, borderRadius: 12, background: 'rgba(34,211,238,0.15)', border: '1px solid rgba(34,211,238,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Droplets size={20} color="#22D3EE" /></div>
-            <span className="patch-badge" style={{ color: '#22D3EE', borderColor: 'rgba(34,211,238,0.3)' }}>Water Quality</span>
+            <span className="patch-badge" style={{ color: '#22D3EE', borderColor: 'rgba(34,211,238,0.3)' }}>{t('water_quality')}</span>
           </div>
           <div style={{ position: 'relative' }}>
             <div className="dashboard-card-value" style={{ color: '#22D3EE', textShadow: '0 0 20px rgba(34,211,238,0.4)' }}>{wqi?.wqi ?? '--'}</div>
             <p className="dashboard-card-label" style={{ marginTop: 8, color: '#fff' }}>{wqi?.status || 'N/A'}</p>
             <div style={{ width: '100%', height: 1, background: 'rgba(255,255,255,0.05)', margin: '16px 0' }} />
             <div className="stat-row">
-              <span>pH Level</span>
+              <span>{t('ph_level')}</span>
               <span style={{ fontWeight: 700, color: '#fff' }}>{wqi?.ph || '--'}</span>
             </div>
           </div>
@@ -184,12 +186,12 @@ const Dashboard = () => {
                 <div style={{ position: 'absolute', inset: 0, borderRadius: '50%', background: aqi?.aqi > 150 ? '#EF4444' : aqi?.aqi > 100 ? '#F59E0B' : '#10B981', animation: aqi?.aqi > 100 ? 'pulse 1.5s infinite' : 'none' }}></div>
                 <div style={{ position: 'absolute', inset: -4, borderRadius: '50%', background: aqi?.aqi > 150 ? '#EF4444' : aqi?.aqi > 100 ? '#F59E0B' : '#10B981', opacity: 0.4, animation: aqi?.aqi > 100 ? 'ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite' : 'none' }}></div>
               </div>
-              <span style={{ fontSize: '14px', fontWeight: 800, color: '#E2E8F0', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Live Environmental Status Core</span>
+              <span style={{ fontSize: '14px', fontWeight: 800, color: '#E2E8F0', letterSpacing: '0.05em', textTransform: 'uppercase' }}>{t('live_status')}</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <span style={{ fontSize: '13px', color: '#94A3B8', fontWeight: 600 }}>System Assessment:</span>
+              <span style={{ fontSize: '13px', color: '#94A3B8', fontWeight: 600 }}>{t('system_assessment')}</span>
               <span style={{ fontSize: '14px', fontWeight: 900, color: aqi?.aqi > 150 ? '#EF4444' : aqi?.aqi > 100 ? '#F59E0B' : '#10B981', letterSpacing: '0.05em' }}>
-                {aqi?.aqi > 150 ? 'CRITICAL RISK DETECTED⚠️' : aqi?.aqi > 100 ? 'ELEVATED RISK⚠️' : 'OPTIMAL CONDITIONS✅'}
+                {aqi?.aqi > 150 ? t('critical_risk') : aqi?.aqi > 100 ? t('elevated_risk') : t('optimal')}
               </span>
             </div>
           </div>
@@ -201,8 +203,8 @@ const Dashboard = () => {
               <div style={{ padding: '24px 24px 0 24px', marginBottom: 32, display: 'flex', alignItems: 'center', gap: 12, position: 'relative', zIndex: 1 }}>
                 <div style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(2, 138, 15, 0.15)', border: '1px solid rgba(2, 138, 15, 0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 15px rgba(2, 138, 15, 0.4)' }}><Wind size={20} color="#028A0F" /></div>
                 <div>
-                  <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#fff', letterSpacing: '0.02em' }}>AQI Index Array</h3>
-                  <p style={{ fontSize: '13px', color: '#94A3B8' }}>Atmospheric density & particle mapping</p>
+                  <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#fff', letterSpacing: '0.02em' }}>{t('aqi_index')}</h3>
+                  <p style={{ fontSize: '13px', color: '#94A3B8' }}>{t('aqi_desc')}</p>
                 </div>
               </div>
               <ResponsiveContainer width="100%" height={260}>
@@ -233,8 +235,8 @@ const Dashboard = () => {
               <div style={{ padding: '24px 24px 0 24px', marginBottom: 32, display: 'flex', alignItems: 'center', gap: 12, position: 'relative', zIndex: 1 }}>
                 <div style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(8, 81, 156, 0.15)', border: '1px solid rgba(8, 81, 156, 0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 15px rgba(8, 81, 156, 0.4)' }}><Droplets size={20} color="#3182BD" /></div>
                 <div>
-                  <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#fff', letterSpacing: '0.02em' }}>WQI Hydrology Wave</h3>
-                  <p style={{ fontSize: '13px', color: '#94A3B8' }}>Chemical structural analysis over time</p>
+                  <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#fff', letterSpacing: '0.02em' }}>{t('wqi_wave')}</h3>
+                  <p style={{ fontSize: '13px', color: '#94A3B8' }}>{t('wqi_desc')}</p>
                 </div>
               </div>
               <ResponsiveContainer width="100%" height={260}>
@@ -267,18 +269,18 @@ const Dashboard = () => {
         <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
           <div style={{ width: 48, height: 48, borderRadius: 12, background: 'var(--brand-gradient)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 15px rgba(16,185,129,0.3)' }}><Leaf size={24} color="#000" /></div>
           <div>
-            <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#fff' }}>Earn Eco Points</h3>
-            <p style={{ fontSize: '14px', color: '#94A3B8' }}>Complete tasks to upgrade your dynamic NFT avatar</p>
+            <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#fff' }}>{t('earn_eco_points')}</h3>
+            <p style={{ fontSize: '14px', color: '#94A3B8' }}>{t('complete_tasks')}</p>
           </div>
         </div>
         <div className="action-grid">
           {[
-            { label: 'Add Dustbin', pts: 25, icon: Trash2 },
-            { label: 'Report Issue', pts: 15, icon: Activity },
-            { label: 'Post to Community', pts: 5, icon: Users },
-            { label: 'Daily Sign In', pts: 2, icon: Zap }
+            { labelKey: 'add_dustbin_action', pts: 25, icon: Trash2 },
+            { labelKey: 'report_issue', pts: 15, icon: Activity },
+            { labelKey: 'post_to_community', pts: 5, icon: Users },
+            { labelKey: 'daily_sign_in', pts: 2, icon: Zap }
           ].map((item) => (
-            <div key={item.label} className="action-card" style={{
+            <div key={item.labelKey} className="action-card" style={{
               display: 'flex', alignItems: 'center', justifyContent: 'space-between',
               padding: '16px 20px', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.08)',
               background: 'rgba(15, 23, 42, 0.6)', cursor: 'pointer',
@@ -286,7 +288,7 @@ const Dashboard = () => {
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <item.icon size={18} color="#10B981" />
-                <span style={{ fontSize: '14px', color: '#E2E8F0', fontWeight: 600 }}>{item.label}</span>
+                <span style={{ fontSize: '14px', color: '#E2E8F0', fontWeight: 600 }}>{t(item.labelKey)}</span>
               </div>
               <span style={{ color: '#000', fontSize: '12px', fontWeight: 800, background: '#10B981', padding: '4px 10px', borderRadius: 100 }}>+{item.pts}</span>
             </div>

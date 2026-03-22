@@ -1,30 +1,37 @@
 import { useState, useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Sidebar from './Sidebar';
-import { Menu, Search, Command, Bell, Check, X, LogOut } from 'lucide-react';
+import LanguageSwitcher from './LanguageSwitcher';
+import { Menu, Bell, Check, X, LogOut } from 'lucide-react';
 import { useSocket } from '../context/SocketContext';
 import { useAuth } from '../context/AuthContext';
 import Chatbot from './Chatbot';
 
-const pageTitles = {
-  '/': 'Dashboard',
-  '/dustbins': 'Locator',
-  '/dustbins/add': 'Add Dustbin',
-  '/waste': 'Classifier',
-  '/community': 'Community',
-  '/learning': 'Learning',
-  '/leaderboard': 'Leaderboard',
-  '/profile': 'Profile',
+const PAGE_TITLE_KEYS = {
+  '/dashboard': 'dashboard',
+  '/dustbins': 'locator',
+  '/dustbins/add': 'add_dustbin',
+  '/waste': 'classifier',
+  '/community': 'community',
+  '/learning': 'learning',
+  '/leaderboard': 'leaderboard',
+  '/profile': 'profile',
+  '/carbon-tracker': 'carbon_tracker',
+  '/exchange': 'web3_exchange',
+  '/impact': 'impact_scanner',
 };
 
 const DashboardLayout = () => {
+  const { t } = useTranslation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [notifications, setNotifications] = useState([
-    { id: 'welcome', type: 'system', title: 'Welcome to PrithviLok!', message: 'Start tracking dustbins to earn eco points.', read: false, time: new Date() }
+    { id: 'welcome', type: 'system', title: t('welcome_notification'), message: t('welcome_notification_msg'), read: false, time: new Date() }
   ]);
   const location = useLocation();
-  const currentTitle = pageTitles[location.pathname] || 'PrithviLok';
+  const titleKey = PAGE_TITLE_KEYS[location.pathname];
+  const currentTitle = titleKey ? t(titleKey) : 'PrithviLok';
 
   const { user } = useAuth();
   const { socket } = useSocket();
@@ -201,11 +208,13 @@ const DashboardLayout = () => {
             }}>
               <span style={{ color: 'var(--text-primary)', fontWeight: 800, fontStyle: 'italic', fontSize: '20px', letterSpacing: '0.02em' }}>{currentTitle}</span>
               <span style={{ color: 'var(--border-glass-strong)' }}>/</span>
-              <span style={{ color: 'var(--text-tertiary)', fontWeight: 500 }}>Overview</span>
+              <span style={{ color: 'var(--text-tertiary)', fontWeight: 500 }}>{t('overview')}</span>
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            {/* Language Switcher */}
+            <LanguageSwitcher />
 
             {/* Notification Bell */}
             <div style={{ position: 'relative' }}>
@@ -245,10 +254,10 @@ const DashboardLayout = () => {
                     overflow: 'hidden'
                   }}>
                     <div style={{ padding: '16px', borderBottom: '1px solid var(--border-subtle)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(255,255,255,0.02)' }}>
-                      <h3 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>Notifications</h3>
+                      <h3 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>{t('notifications')}</h3>
                       {unreadCount > 0 && (
                         <button onClick={markAllRead} style={{ background: 'none', border: 'none', fontSize: '12px', color: 'var(--brand-solid)', cursor: 'pointer', fontWeight: 500, display: 'flex', alignItems: 'center', gap: 4 }}>
-                          <Check size={14} /> Mark all read
+                          <Check size={14} /> {t('mark_all_read')}
                         </button>
                       )}
                     </div>
@@ -256,7 +265,7 @@ const DashboardLayout = () => {
                       {notifications.length === 0 ? (
                         <div style={{ padding: '32px 16px', textAlign: 'center', color: 'var(--text-tertiary)', fontSize: '13px' }}>
                           <Bell size={24} style={{ opacity: 0.5, margin: '0 auto 8px' }} />
-                          No new notifications
+                          {t('no_new_notifications')}
                         </div>
                       ) : (
                         notifications.map(n => (
@@ -323,7 +332,7 @@ const DashboardLayout = () => {
                   </div>
                   <div style={{ textAlign: 'left' }}>
                     <p style={{ margin: 0, fontSize: '13px', fontWeight: 700, color: '#fff', lineHeight: 1.2, whiteSpace: 'nowrap' }}>{user.name}</p>
-                    <p style={{ margin: 0, fontSize: '11px', color: 'var(--brand-solid)', fontWeight: 600 }}>Lvl: {user.ecoLevel || 'Seed'}</p>
+                    <p style={{ margin: 0, fontSize: '11px', color: 'var(--brand-solid)', fontWeight: 600 }}>{t('level')}: {user.ecoLevel || 'Seed'}</p>
                   </div>
                 </button>
 

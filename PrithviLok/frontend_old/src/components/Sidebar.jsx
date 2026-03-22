@@ -1,31 +1,34 @@
 import { NavLink, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import {
   LayoutDashboard, MapPin, PlusCircle, ScanLine, MessageCircle,
-  BookOpen, Trophy, LogOut, LogIn, Leaf, Wallet, Camera, Activity
+  BookOpen, Trophy, Leaf, Wallet, Camera, Activity
 } from 'lucide-react';
 
-const navItems = [
-  { section: 'Overview' },
-  { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-  { path: '/leaderboard', icon: Trophy, label: 'Leaderboard' },
-  { path: '/carbon-tracker', icon: Activity, label: 'Carbon Tracker' },
-  { path: '/exchange', icon: Wallet, label: 'Web3 Exchange' },
-
-  { section: 'Sustainability' },
-  { path: '/dustbins', icon: MapPin, label: 'Locator' },
-  { path: '/dustbins/add', icon: PlusCircle, label: 'Add Dustbin', auth: true },
-  { path: '/waste', icon: ScanLine, label: 'Classifier' },
-  { path: '/impact', icon: Camera, label: 'Impact Scanner' },
-
-  { section: 'Community' },
-  { path: '/community', icon: MessageCircle, label: 'Community' },
-  { path: '/learning', icon: BookOpen, label: 'Learning' },
-];
-
 const Sidebar = ({ isOpen, onClose }) => {
+  const { t } = useTranslation();
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+
+  // Nav items defined inside component so t() works reactively
+  const navItems = [
+    { section: t('overview') },
+    { path: '/dashboard', icon: LayoutDashboard, labelKey: 'dashboard' },
+    { path: '/leaderboard', icon: Trophy, labelKey: 'leaderboard' },
+    { path: '/carbon-tracker', icon: Activity, labelKey: 'carbon_tracker' },
+    { path: '/exchange', icon: Wallet, labelKey: 'web3_exchange' },
+
+    { section: t('sustainability') },
+    { path: '/dustbins', icon: MapPin, labelKey: 'locator' },
+    { path: '/dustbins/add', icon: PlusCircle, labelKey: 'add_dustbin', auth: true },
+    { path: '/waste', icon: ScanLine, labelKey: 'classifier' },
+    { path: '/impact', icon: Camera, labelKey: 'impact_scanner' },
+
+    { section: t('community') },
+    { path: '/community', icon: MessageCircle, labelKey: 'community' },
+    { path: '/learning', icon: BookOpen, labelKey: 'learning' },
+  ];
 
   const handleLogout = () => {
     logout();
@@ -85,12 +88,12 @@ const Sidebar = ({ isOpen, onClose }) => {
               <NavLink
                 key={item.path}
                 to={item.path}
-                end={item.path === '/'}
+                end={item.path === '/dashboard'}
                 className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
                 onClick={() => { if (window.innerWidth <= 1024) onClose(); }}
               >
                 <Icon size={16} strokeWidth={2.5} />
-                <span>{item.label}</span>
+                <span>{t(item.labelKey)}</span>
               </NavLink>
             );
           })}
