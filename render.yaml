@@ -1,10 +1,10 @@
 services:
-  # ── Backend API (Node.js / Express) ─────────────────────────
+  # ── Unified Service: Backend + Frontend (Single URL) ────────
   - type: web
-    name: nit-final-prithivlok-1
+    name: nit-final-prithivlok
     runtime: node
     rootDir: PrithviLok/backend
-    buildCommand: npm install
+    buildCommand: npm install && cd ../frontend_old && npm install && npm run build
     startCommand: node server.js
     envVars:
       - key: NODE_ENV
@@ -44,7 +44,7 @@ services:
       - key: QUIZ_NO_REPEAT_SESSIONS
         value: 5
       - key: CLIENT_URL
-        value: https://nit-final-prithivlok-frontend.onrender.com
+        value: https://nit-final-prithivlok.onrender.com
       - key: POLYGON_RPC_URL
         value: https://rpc-mumbai.maticvigil.com
       - key: NFT_CONTRACT_ADDRESS
@@ -53,24 +53,3 @@ services:
         sync: false
       - key: GOOGLE_CLIENT_ID
         sync: false
-
-  # ── Frontend (Vite / React Static Site) ─────────────────────
-  - type: web
-    name: nit-final-prithivlok-frontend
-    runtime: static
-    rootDir: PrithviLok/frontend_old
-    buildCommand: npm install && npm run build
-    staticPublishPath: dist
-    headers:
-      - path: /*
-        name: Cache-Control
-        value: no-cache
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
-    envVars:
-      - key: VITE_API_URL
-        value: https://nit-final-prithivlok-1.onrender.com/api
-      - key: VITE_SOCKET_URL
-        value: https://nit-final-prithivlok-1.onrender.com

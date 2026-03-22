@@ -47,31 +47,53 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(globalLimiter);
 
-// Serve uploaded files
-app.use('/uploads', express.static('uploads'));
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-// ---- Root Route ----
-app.get('/', (req, res) => {
-  res.json({
-    name: 'PrithviLok API',
-    version: '1.0.0',
-    description: 'Decentralized Sustainability Platform',
-    endpoints: {
-      health: '/api/health',
-      auth: '/api/auth',
-      users: '/api/users',
-      dustbins: '/api/dustbins',
-      environment: '/api/environment',
-      community: '/api/community',
-      learning: '/api/learning',
-      leaderboard: '/api/leaderboard',
-      admin: '/api/admin',
-      impact: '/api/impact'
-    },
-    documentation: 'https://github.com/Ashish-kumar78/NIT_FINAL_PRITHIVLOK',
-    status: '🟢 Running'
+// Get __dirname in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve uploaded files
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Serve static frontend files in production
+if (process.env.NODE_ENV === 'production') {
+  const distPath = path.join(__dirname, '../frontend_old/dist');
+  app.use(express.static(distPath));
+  
+  // Serve index.html for all non-API routes (React Router support)
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api')) {
+      return next();
+    }
+    res.sendFile(path.join(distPath, 'index.html'));
   });
-});
+} else {
+  // Development - show API info
+  app.get('/', (req, res) => {
+    res.json({
+      name: 'PrithviLok API',
+      version: '1.0.0',
+      description: 'Decentralized Sustainability Platform',
+      message: 'Backend running in development mode',
+      endpoints: {
+        health: '/api/health',
+        auth: '/api/auth',
+        users: '/api/users',
+        dustbins: '/api/dustbins',
+        environment: '/api/environment',
+        community: '/api/community',
+        learning: '/api/learning',
+        leaderboard: '/api/leaderboard',
+        admin: '/api/admin',
+        impact: '/api/impact'
+      },
+      documentation: 'https://github.com/Ashish-kumar78/NIT_FINAL_PRITHIVLOK',
+      status: '🟢 Running'
+    });
+  });
+}
 
 // ---- API Routes ----
 app.get('/api/health', (req, res) => {
