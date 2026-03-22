@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { ShieldCheck, Eye, EyeOff, Leaf, ArrowLeft } from 'lucide-react';
 
-const ADMIN_API = 'http://localhost:5000/api/admin';
+const ADMIN_API = `${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/admin`;
 
 const AdminLogin = () => {
   const navigate = useNavigate();
