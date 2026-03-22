@@ -58,51 +58,6 @@ const __dirname = path.dirname(__filename);
 // Serve uploaded files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Serve static frontend files in production
-if (process.env.NODE_ENV === 'production') {
-  // The dist folder should be copied to backend during build
-  const distPath = path.join(__dirname, 'dist');
-  
-  if (fs.existsSync(distPath) && fs.existsSync(path.join(distPath, 'index.html'))) {
-    console.log(`✅ Serving frontend from: ${distPath}`);
-    app.use(express.static(distPath));
-    
-    // Serve index.html for all non-API routes (React Router support)
-    app.get('*', (req, res, next) => {
-      if (req.path.startsWith('/api')) {
-        return next();
-      }
-      res.sendFile(path.join(distPath, 'index.html'));
-    });
-  } else {
-    console.warn('⚠️  Frontend dist not found at:', distPath);
-    console.warn('Make sure build command copies dist to backend folder');
-  }
-} else {
-  // Development - show API info
-  app.get('/', (req, res) => {
-    res.json({
-      name: 'PrithviLok API',
-      version: '1.0.0',
-      description: 'Decentralized Sustainability Platform',
-      message: 'Backend running in development mode',
-      endpoints: {
-        health: '/api/health',
-        auth: '/api/auth',
-        users: '/api/users',
-        dustbins: '/api/dustbins',
-        environment: '/api/environment',
-        community: '/api/community',
-        learning: '/api/learning',
-        leaderboard: '/api/leaderboard',
-        admin: '/api/admin',
-        impact: '/api/impact'
-      },
-      documentation: 'https://github.com/Ashish-kumar78/NIT_FINAL_PRITHIVLOK',
-      status: '🟢 Running'
-    });
-  });
-}
 
 // ---- API Routes ----
 app.get('/api/health', (req, res) => {
@@ -119,7 +74,35 @@ app.use('/api/leaderboard', leaderboardRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/impact', impactRoutes);
 
-// ---- Error Handling ----
+// ---- Serve Frontend (MUST be after all API routes) ----
+if (process.env.NODE_ENV === 'production') {
+  const distPath = path.join(__dirname, 'dist');
+
+  if (fs.existsSync(distPath) && fs.existsSync(path.join(distPath, 'index.html'))) {
+    console.log(`✅ Serving frontend from: ${distPath}`);
+    app.use(express.static(distPath));
+
+    // SPA catch-all — send index.html for all non-API routes
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(distPath, 'index.html'));
+    });
+  } else {
+    console.warn('⚠️  Frontend dist not found at:', distPath);
+    console.warn('Make sure the build command copies dist to the backend folder.');
+  }
+} else {
+  app.get('/', (req, res) => {
+    res.json({
+      name: 'PrithviLok API',
+      version: '1.0.0',
+      description: 'Decentralized Sustainability Platform',
+      message: 'Backend running in development mode',
+      status: '🟢 Running'
+    });
+  });
+}
+
+// ---- Error Handling (must be last) ----
 app.use(notFound);
 app.use(errorHandler);
 
