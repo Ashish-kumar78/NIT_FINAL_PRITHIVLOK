@@ -2,9 +2,10 @@
 // Axios API Instance
 // ============================================================
 import axios from 'axios';
+import { API_BASE } from '../config/network';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api',
+  baseURL: API_BASE,
   withCredentials: true,
 });
 

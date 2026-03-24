@@ -8,11 +8,7 @@ import { useSocket } from '../context/SocketContext';
 import { Send, Heart, MessageCircle, Plus, Wallet, Trash2, ChevronDown, ChevronUp, Camera, X, Image as ImageIcon } from 'lucide-react';
 import toast from 'react-hot-toast';
 import EcoLevelBadge from '../components/EcoLevelBadge';
-
-const MEDIA_BASE_URL =
-  import.meta.env.VITE_SOCKET_URL ||
-  (typeof window !== 'undefined' ? window.location.origin : '') ||
-  'http://localhost:5000';
+import { MEDIA_BASE_URL } from '../config/network';
 
 const Community = () => {
   const { user, web3Login } = useAuth();

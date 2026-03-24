@@ -5,16 +5,14 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { io as socketIO } from 'socket.io-client';
+import { API_BASE, MEDIA_BASE_URL, SOCKET_URL } from '../../config/network';
 import {
   ShieldCheck, CheckCircle, XCircle, Clock, Trash2,
   MapPin, User, Calendar, LogOut, RefreshCw, Eye,
   BarChart3, Users, Filter, Bell, AlertTriangle, Volume2, VolumeX
 } from 'lucide-react';
 
-const runtimeOrigin = typeof window !== 'undefined' ? window.location.origin : '';
-const API_BASE = import.meta.env.VITE_API_URL || '/api';
 const ADMIN_API = `${API_BASE}/admin`;
-const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || runtimeOrigin || 'http://localhost:5000';
 
 const getToken = () => localStorage.getItem('adminToken');
 const authHeaders = () => ({ Authorization: `Bearer ${getToken()}`, 'Content-Type': 'application/json' });
@@ -167,7 +165,7 @@ const ReportCard = ({ dustbin, onVerify, onReject, onDelete, isNew }) => {
             <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', alignItems: 'flex-start' }}>
               {dustbin.photo ? (
                 <div style={{ position: 'relative', cursor: 'pointer' }} onClick={() => setImgOpen(true)}>
-                  <img src={`${SOCKET_URL}${dustbin.photo}`} alt="Dustbin" style={{ width: 140, height: 100, borderRadius: 12, objectFit: 'cover', border: '1px solid rgba(255,255,255,0.1)' }} />
+                  <img src={`${MEDIA_BASE_URL}${dustbin.photo}`} alt="Dustbin" style={{ width: 140, height: 100, borderRadius: 12, objectFit: 'cover', border: '1px solid rgba(255,255,255,0.1)' }} />
                   <div style={{ position: 'absolute', bottom: 6, right: 6, background: 'rgba(0,0,0,0.7)', borderRadius: 6, padding: '2px 8px', fontSize: '11px', color: '#fff', display: 'flex', alignItems: 'center', gap: 4 }}>
                     <Eye size={10} /> View
                   </div>
@@ -226,7 +224,7 @@ const ReportCard = ({ dustbin, onVerify, onReject, onDelete, isNew }) => {
 
       {imgOpen && dustbin.photo && (
         <div onClick={() => setImgOpen(false)} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.9)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-          <img src={`${SOCKET_URL}${dustbin.photo}`} alt="Proof" style={{ maxWidth: '90vw', maxHeight: '90vh', borderRadius: 16, objectFit: 'contain' }} />
+          <img src={`${MEDIA_BASE_URL}${dustbin.photo}`} alt="Proof" style={{ maxWidth: '90vw', maxHeight: '90vh', borderRadius: 16, objectFit: 'contain' }} />
         </div>
       )}
     </div>
@@ -263,7 +261,7 @@ const LiveNotifBanner = ({ report, onDismiss }) => (
         </p>
 
         {report.photo && (
-          <img src={`${SOCKET_URL}${report.photo}`} alt="" style={{ marginTop: 10, width: '100%', height: 80, objectFit: 'cover', borderRadius: 10, border: '1px solid rgba(255,255,255,0.1)' }} />
+          <img src={`${MEDIA_BASE_URL}${report.photo}`} alt="" style={{ marginTop: 10, width: '100%', height: 80, objectFit: 'cover', borderRadius: 10, border: '1px solid rgba(255,255,255,0.1)' }} />
         )}
 
         <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>

@@ -9,6 +9,7 @@ import api from '../api/axios';
 import { Plus, Trash2, Star, LocateFixed } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useMapEvents } from 'react-leaflet';
+import { MEDIA_BASE_URL } from '../config/network';
 
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
@@ -200,7 +201,7 @@ const DustbinLocator = () => {
                       {d.photo && (
                         <div style={{ marginBottom: 8, borderRadius: 8, overflow: 'hidden' }}>
                           <img 
-                            src={`${(import.meta.env.VITE_API_URL || '/api').replace('/api', '') || (typeof window !== 'undefined' ? window.location.origin : '')}${d.photo}`} 
+                            src={`${MEDIA_BASE_URL}${d.photo}`} 
                             alt={`${d.type} bin`} 
                             style={{ width: '100%', height: '120px', objectFit: 'cover', display: 'block' }} 
                             onError={(e) => e.target.style.display = 'none'}

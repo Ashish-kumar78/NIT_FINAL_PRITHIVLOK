@@ -4,6 +4,7 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { io } from 'socket.io-client';
 import { useAuth } from './AuthContext';
+import { SOCKET_URL } from '../config/network';
 
 const SocketContext = createContext(null);
 
@@ -13,9 +14,6 @@ export const SocketProvider = ({ children }) => {
   const [connected, setConnected] = useState(false);
 
   useEffect(() => {
-    const runtimeOrigin = typeof window !== 'undefined' ? window.location.origin : '';
-    const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || runtimeOrigin || 'http://localhost:5000';
-
     socketRef.current = io(SOCKET_URL, {
       autoConnect: true,
       reconnectionAttempts: 5,
