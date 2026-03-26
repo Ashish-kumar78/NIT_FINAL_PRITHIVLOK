@@ -2,15 +2,19 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://nit-final-prithivlok-6.onrender.com/api/:path*"
+      "destination": "https://your-backend-name.onrender.com/api/:path*"
     },
     {
       "source": "/uploads/:path*",
-      "destination": "https://nit-final-prithivlok-6.onrender.com/uploads/:path*"
+      "destination": "https://your-backend-name.onrender.com/uploads/:path*"
     },
     {
       "source": "/socket.io/:path*",
-      "destination": "https://nit-final-prithivlok-6.onrender.com/socket.io/:path*"
+      "destination": "https://your-backend-name.onrender.com/socket.io/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
