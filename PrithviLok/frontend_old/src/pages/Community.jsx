@@ -299,7 +299,7 @@ const Community = () => {
         ))}
       </div>
 
-            {/* POSTS TAB */}
+      {/* POSTS TAB */}
       {activeTab === 'posts' && (
         <div style={{ width: '100%', maxWidth: 940, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 16 }}>
           <div className="card-glass" style={{ padding: 20, border: '1px solid rgba(34, 197, 94, 0.25)' }}>

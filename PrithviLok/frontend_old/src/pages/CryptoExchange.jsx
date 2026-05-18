@@ -145,7 +145,7 @@ const CryptoExchange = () => {
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '24px' }}>
-        
+
         {/* Wallet Connection Card */}
         <div className="card-glass" style={{ display: 'flex', flexDirection: 'column', gap: 24, padding: '32px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
@@ -182,7 +182,7 @@ const CryptoExchange = () => {
           </div>
 
           {!walletAddress && (
-            <button 
+            <button
               onClick={connectWallet}
               style={{ width: '100%', padding: '14px', borderRadius: '14px', background: 'linear-gradient(90deg, #F59E0B, #EA580C)', color: '#fff', fontSize: '15px', fontWeight: 800, border: 'none', cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 8, boxShadow: '0 4px 20px rgba(245, 158, 11, 0.4)' }}
             >
@@ -210,22 +210,22 @@ const CryptoExchange = () => {
                 <p style={{ fontSize: '12px', color: '#64748B', fontWeight: 700, textTransform: 'uppercase' }}>Eco Points</p>
               </div>
               <ArrowRightLeft size={24} color="#94A3B8" />
-              <div style={{textAlign: 'center'}}>
+              <div style={{ textAlign: 'center' }}>
                 <span style={{ fontSize: '32px', fontWeight: 900, color: '#10B981' }}>{currentScore}</span>
                 <p style={{ fontSize: '12px', color: '#64748B', fontWeight: 700, textTransform: 'uppercase' }}>$PLOK Tokens</p>
               </div>
             </div>
           </div>
 
-          <button 
+          <button
             onClick={handleMintTokens}
             disabled={!walletAddress || isMinting || currentScore < 100}
-            style={{ 
-              width: '100%', padding: '16px', borderRadius: '14px', 
-              background: (!walletAddress || currentScore < 100) ? 'rgba(255,255,255,0.05)' : 'linear-gradient(90deg, #10B981, #059669)', 
-              color: (!walletAddress || currentScore < 100) ? '#64748B' : '#fff', 
-              fontSize: '16px', fontWeight: 800, border: 'none', 
-              cursor: (!walletAddress || isMinting || currentScore < 100) ? 'not-allowed' : 'pointer', 
+            style={{
+              width: '100%', padding: '16px', borderRadius: '14px',
+              background: (!walletAddress || currentScore < 100) ? 'rgba(255,255,255,0.05)' : 'linear-gradient(90deg, #10B981, #059669)',
+              color: (!walletAddress || currentScore < 100) ? '#64748B' : '#fff',
+              fontSize: '16px', fontWeight: 800, border: 'none',
+              cursor: (!walletAddress || isMinting || currentScore < 100) ? 'not-allowed' : 'pointer',
               boxShadow: (!walletAddress || currentScore < 100) ? 'none' : '0 8px 30px rgba(16, 185, 129, 0.4)',
               transition: 'all 0.3s ease'
             }}
@@ -234,7 +234,7 @@ const CryptoExchange = () => {
           </button>
         </div>
       </div>
-      
+
       <div style={{ marginTop: '0px', padding: '24px', background: 'rgba(59, 130, 246, 0.05)', border: '1px dashed rgba(59, 130, 246, 0.3)', borderRadius: '16px', display: 'flex', alignItems: 'center', gap: '16px' }}>
         <ShieldCheck size={32} color="#3B82F6" />
         <p style={{ fontSize: '14px', color: '#94A3B8', margin: 0, lineHeight: 1.5 }}>
